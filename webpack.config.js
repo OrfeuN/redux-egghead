@@ -9,7 +9,7 @@ module.exports = {
   },
   module: {
     loaders: [{
-      exclude: /node_modules/,
+      exclude: [/node_modules/, /incrementer.js/],
       loader: 'babel-loader',
       query: {
         presets: ['react', 'es2015']

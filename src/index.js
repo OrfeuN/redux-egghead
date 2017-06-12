@@ -1,6 +1,35 @@
-import {createStore} from 'redux';
+import {createStore, combineReducers} from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import TodoApp from './components/TodoApp'
+
+const visibilityFilter = (state = 'SHOW_ALL', action) => {
+    switch(action.type){
+    case 'SET_VISIBILITY_FILTER':
+        return action.filter;
+    default:
+        return state;
+    }
+};
+/*
+const combineReducers = (reducers) =>{
+    return (state, action) => {
+            Object.keys(reducers).reduce((nextState, key) => {
+                nextState[key] = reducers[key](state, action);
+                return nextState;
+        }, {})
+    };
+};
+
+const todoApp = combineReducers({todos: todos, visibilityFilter: visibilityFilter});
+
+const todoApp = (state = {}, action) => {
+    return { 
+        todos: todos(state, action)
+        , visibilityFilter: visibilityFilter(state.visibilityFilter, action)
+    };
+};*/
 
 //reducer composition
 const todo = (state, action) => {
@@ -9,7 +38,8 @@ const todo = (state, action) => {
             return { id: action.id, text: action.text, completed: false};
         case 'TOGGLE_TODO':
             return state.id === action.id ?
-                {...state, completed: !state.completed} : state;
+                Object.assign({}, state, { completed: !state.completed }) : state;
+                //{...state, completed: !state.completed} : state;
         default:
             return state;
     }
@@ -26,56 +56,16 @@ const todos = (state = [], action) => {
     }
 };
 
-/*
-const reducer = (state = 0, action) =>{
-    switch(action.type){
-        case 'INCREMENT':
-            return state + 1;
-        case 'DECREMENT':
-            return state - 1;
-        default:
-            return state;
+const todoApp = combineReducers({ 
+    todos
+    , visibilityFilter
+});
 
-    }
-};
-
-const store = createStore(reducer);
-
-const Counter = ({value, onIncrement, onDecrement}) => {
-    return (
-        <div>
-            <h1>{value}</h1>
-            <input onClick={onIncrement} type="button" value="+" />
-            <input onClick={onDecrement} type="button" value="-" />
-        </div>
-    );
-};
+const store = createStore(todoApp);
 
 const render = () => {
-    ReactDOM.render(<Counter value={store.getState()} 
-            onIncrement={() => store.dispatch({type:'INCREMENT'})} 
-            onDecrement={() => store.dispatch({type:'DECREMENT'})} 
-    />
-    , document.getElementById('root'));
+    ReactDOM.render(<TodoApp store={store} todos={store.getState().todos} />, document.getElementById('root'));
 };
 
 store.subscribe(render);
-
-render();*/
-
-/*const render = () => {
-    let elem = document.querySelector('.container');
-    elem.innerHTML = store.getState();
-};
-
-store.subscribe(render);
-
-window.addEventListener('load', function(){
-    document.querySelectorAll('.modifier').forEach((elem) => {
-        elem.addEventListener("click", (evt) => {
-            let increment_type = evt.target.value === '+' ? 'INCREMENT' : 'DECREMENT';
-            store.dispatch({ type: increment_type });
-        });
-    });
-    render();
-});*/
+render();
