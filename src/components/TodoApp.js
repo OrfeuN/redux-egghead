@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import FilterLink from './FilterLink';
+import TodoList from './TodoList';
+import AddTodo from './AddTodo';
+import FooterLink from './FooterLink';
 
 class TodoApp extends Component {
     constructor(props) {
@@ -9,36 +11,28 @@ class TodoApp extends Component {
     }
     
     render() {
-        const {todos, visibilityFilter} = this.props;
+        const {todos, visibilityFilter, store} = this.props;
         const visibleTodos = this.props.getVisibleTodos(todos, visibilityFilter);
         return (
             <div>
-                <input ref={(node) => {this.newTodoInput = node;}} />
-                <button onClick={() => {
-                    this.props.store.dispatch({
-                        type: 'ADD_TODO'
-                        , text: this.newTodoInput.value
-                        , id: this.todoId++
-                    });
-                    this.newTodoInput.value = '';
-                    }}>Add Todo</button>
-                <ul>
-                    {visibleTodos.map((todo) =>{
-                        return <li key={todo.id} style={{ textDecoration: todo.completed? 'line-through' : 'none' }}>
-                            <input type="checkbox" readOnly="true" checked={todo.completed} onClick={() => {
-                            this.props.store.dispatch({
-                            type: 'TOGGLE_TODO'
-                            , text: todo.text
-                            , id: todo.id
-                    }); }} />
-                            {todo.text}
-                            </li>
-                    })}
-                </ul>
+                    <AddTodo onAddClick={(value) => {
+                        store.dispatch({
+                            type: 'ADD_TODO'
+                            , text: value
+                            , id: this.todoId++
+                        });
+                    }} />
+                    <TodoList onTodoClick={(id) => {
+                        store.dispatch({
+                                type: 'TOGGLE_TODO'
+                                , id: id
+                            }); 
+                        }} 
+                        todos={visibleTodos} />
                 <p>
-                    <FilterLink store={this.props.store} filter="SHOW_ALL" text="ALL" currentFilter={visibilityFilter} />
-                    <FilterLink store={this.props.store} filter="SHOW_ACTIVE" text="Active" currentFilter={visibilityFilter} />
-                    <FilterLink store={this.props.store} filter="SHOW_COMPLETED" text="Completed" currentFilter={visibilityFilter} />
+                    <FooterLink onFooterClick={filter => {
+                store.dispatch({type: 'SET_VISIBILITY_FILTER', filter });}} 
+                visibilityFilter={visibilityFilter} />
                 </p>
             </div>
         );
