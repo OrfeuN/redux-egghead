@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import FilterLink from './FilterLink';
+
 class TodoApp extends Component {
     constructor(props) {
         super(props);
@@ -7,6 +9,8 @@ class TodoApp extends Component {
     }
     
     render() {
+        const {todos, visibilityFilter} = this.props;
+        const visibleTodos = this.props.getVisibleTodos(todos, visibilityFilter);
         return (
             <div>
                 <input ref={(node) => {this.newTodoInput = node;}} />
@@ -19,9 +23,9 @@ class TodoApp extends Component {
                     this.newTodoInput.value = '';
                     }}>Add Todo</button>
                 <ul>
-                    {this.props.todos.map((todo) =>{
+                    {visibleTodos.map((todo) =>{
                         return <li key={todo.id} style={{ textDecoration: todo.completed? 'line-through' : 'none' }}>
-                            <input type="checkbox" checked={todo.completed} onClick={() => {
+                            <input type="checkbox" readOnly="true" checked={todo.completed} onClick={() => {
                             this.props.store.dispatch({
                             type: 'TOGGLE_TODO'
                             , text: todo.text
@@ -31,6 +35,11 @@ class TodoApp extends Component {
                             </li>
                     })}
                 </ul>
+                <p>
+                    <FilterLink store={this.props.store} filter="SHOW_ALL" text="ALL" currentFilter={visibilityFilter} />
+                    <FilterLink store={this.props.store} filter="SHOW_ACTIVE" text="Active" currentFilter={visibilityFilter} />
+                    <FilterLink store={this.props.store} filter="SHOW_COMPLETED" text="Completed" currentFilter={visibilityFilter} />
+                </p>
             </div>
         );
     }

@@ -4,6 +4,18 @@ import ReactDOM from 'react-dom';
 
 import TodoApp from './components/TodoApp'
 
+const getVisibleTodos = (todos, filter) => {
+    switch(filter){
+        case 'SHOW_ALL':
+            return todos;
+        case 'SHOW_COMPLETED':
+            return todos.filter((todo) => todo.completed);
+        case 'SHOW_ACTIVE':
+            return todos.filter((todo) => !todo.completed);
+
+    }
+};
+
 const visibilityFilter = (state = 'SHOW_ALL', action) => {
     switch(action.type){
     case 'SET_VISIBILITY_FILTER':
@@ -64,7 +76,7 @@ const todoApp = combineReducers({
 const store = createStore(todoApp);
 
 const render = () => {
-    ReactDOM.render(<TodoApp store={store} todos={store.getState().todos} />, document.getElementById('root'));
+    ReactDOM.render(<TodoApp store={store} getVisibleTodos={getVisibleTodos} todos={store.getState().todos} visibilityFilter={store.getState().visibilityFilter} />, document.getElementById('root'));
 };
 
 store.subscribe(render);
