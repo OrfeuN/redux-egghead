@@ -6,11 +6,11 @@ const Link = ({active, onFilterClick, text}) => {
         <span>{text}</span>
     ) : 
     (
-            < a href="#" 
+        < a href="#" 
             onClick={(e) => {
-                e.preventDefault();
-                onFilterClick();
-            }}>{text}</a>
+            e.preventDefault();
+            onFilterClick();
+        }}>{text}</a>
     );
 };
 
