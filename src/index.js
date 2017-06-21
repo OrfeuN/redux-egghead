@@ -75,9 +75,4 @@ const todoApp = combineReducers({
 
 const store = createStore(todoApp);
 
-const render = () => {
-    ReactDOM.render(<TodoApp store={store} getVisibleTodos={getVisibleTodos} todos={store.getState().todos} visibilityFilter={store.getState().visibilityFilter} />, document.getElementById('root'));
-};
-
-store.subscribe(render);
-render();
+ReactDOM.render(<TodoApp store={store} getVisibleTodos={getVisibleTodos} />, document.getElementById('root'));
