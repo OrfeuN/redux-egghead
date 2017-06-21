@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import TodoList from './TodoList';
 
@@ -8,7 +9,8 @@ class VisibleTodoList extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+        const {store} = this.context;
+        this.unsubscribe = store.subscribe(() => this.forceUpdate());
     }
 
     componentWillUnmount() {
@@ -16,7 +18,7 @@ class VisibleTodoList extends Component {
     }
 
     render() {
-        const {store, getVisibleTodos} = this.props;
+        const {store, getVisibleTodos} = this.context;
         const reduxState = store.getState();
         return (
             <TodoList 
@@ -31,5 +33,10 @@ class VisibleTodoList extends Component {
         );
     }
 }
+
+VisibleTodoList.contextTypes = {
+    store: PropTypes.object
+    , getVisibleTodos: PropTypes.func
+};
 
 export default VisibleTodoList;

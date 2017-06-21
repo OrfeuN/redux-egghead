@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 let todoId = 0;
 
-const AddTodo = ({store}) => {
+const AddTodo = (props, {store}) => {
     let newTodoInput;
     return (
         <div>
@@ -17,6 +19,11 @@ const AddTodo = ({store}) => {
                 
         </div>
     );
+};
+
+AddTodo.contextTypes = {
+    store: PropTypes.object
+    , getVisibleTodos: PropTypes.func
 };
 
 export default AddTodo;

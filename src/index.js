@@ -2,7 +2,8 @@ import {createStore, combineReducers} from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import TodoApp from './components/TodoApp'
+import TodoApp from './components/TodoApp';
+import Provider from './components/Provider';
 
 const getVisibleTodos = (todos, filter) => {
     switch(filter){
@@ -75,4 +76,8 @@ const todoApp = combineReducers({
 
 const store = createStore(todoApp);
 
-ReactDOM.render(<TodoApp store={store} getVisibleTodos={getVisibleTodos} />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store} getVisibleTodos={getVisibleTodos}>
+        <TodoApp />
+    </Provider>
+, document.getElementById('root'));

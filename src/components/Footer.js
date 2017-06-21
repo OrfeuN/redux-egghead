@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import FilterLink from './FilterLink';
 
-const Footer = ({store}) => {
+const Footer = (props, {store}) => {
     return (
         <div>
             <FilterLink store={store} filter="SHOW_ALL" text="ALL" />
@@ -14,5 +15,9 @@ const Footer = ({store}) => {
     );
 };
 
+Footer.contextTypes = {
+    store: PropTypes.object
+    , getVisibleTodos: PropTypes.func
+};
 
 export default Footer;

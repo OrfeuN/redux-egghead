@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Link from './Link';
 
@@ -8,7 +9,8 @@ class FilterLink extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+        const {store} = this.context;
+        this.unsubscribe = store.subscribe(() => this.forceUpdate());
     }
 
     componentWillUnmount() {
@@ -16,7 +18,8 @@ class FilterLink extends Component {
     }
 
     render() {
-        const {store, filter, text} = this.props;
+        const { filter, text} = this.props;
+        const {store} = this.context;;
         const reduxState = store.getState();
         return (
             <Link 
@@ -28,5 +31,9 @@ class FilterLink extends Component {
     }
 }
 
+FilterLink.contextTypes = {
+    store: PropTypes.object
+    , getVisibleTodos: PropTypes.func
+};
 
 export default FilterLink;
