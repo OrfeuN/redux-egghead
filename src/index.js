@@ -1,11 +1,12 @@
 import {createStore, combineReducers} from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
+//import {Provider} from 'react-redux';
 
 import TodoApp from './components/TodoApp';
 import Provider from './components/Provider';
 
-const getVisibleTodos = (todos, filter) => {
+/*const getVisibleTodos = (todos, filter) => {
     switch(filter){
         case 'SHOW_ALL':
             return todos;
@@ -15,7 +16,7 @@ const getVisibleTodos = (todos, filter) => {
             return todos.filter((todo) => !todo.completed);
 
     }
-};
+};*/
 
 const visibilityFilter = (state = 'SHOW_ALL', action) => {
     switch(action.type){
@@ -77,7 +78,7 @@ const todoApp = combineReducers({
 const store = createStore(todoApp);
 
 ReactDOM.render(
-    <Provider store={store} getVisibleTodos={getVisibleTodos}>
+    <Provider store={store}>
         <TodoApp />
     </Provider>
 , document.getElementById('root'));

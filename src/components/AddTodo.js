@@ -23,7 +23,6 @@ const AddTodo = (props, {store}) => {
 
 AddTodo.contextTypes = {
     store: PropTypes.object
-    , getVisibleTodos: PropTypes.func
 };
 
 export default AddTodo;

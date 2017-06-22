@@ -3,9 +3,22 @@ import PropTypes from 'prop-types';
 
 import TodoList from './TodoList';
 
+
 class VisibleTodoList extends Component {
     constructor(props){
         super(props);
+    }
+
+    getVisibleTodos(todos, filter) {
+        switch(filter){
+            case 'SHOW_ALL':
+                return todos;
+            case 'SHOW_COMPLETED':
+                return todos.filter((todo) => todo.completed);
+            case 'SHOW_ACTIVE':
+                return todos.filter((todo) => !todo.completed);
+
+        }
     }
 
     componentDidMount() {
@@ -19,7 +32,7 @@ class VisibleTodoList extends Component {
 
     render() {
         const {store, getVisibleTodos} = this.context;
-        const reduxState = store.getState();
+        const mapStateToProps = (reduxState) => this.getVisibleTodos(reduxState.todos, reduxState.visibilityFilter);
         return (
             <TodoList 
                 onTodoClick={(id) => {
@@ -28,7 +41,7 @@ class VisibleTodoList extends Component {
                             , id: id
                         }); 
                     }} 
-                todos={getVisibleTodos(reduxState.todos, reduxState.visibilityFilter)}
+                todos={mapStateToProps(store.getState())}
             />
         );
     }
@@ -36,7 +49,7 @@ class VisibleTodoList extends Component {
 
 VisibleTodoList.contextTypes = {
     store: PropTypes.object
-    , getVisibleTodos: PropTypes.func
+//    , getVisibleTodos: PropTypes.func
 };
 
 export default VisibleTodoList;

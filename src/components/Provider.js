@@ -10,7 +10,7 @@ class Provider extends Component {
     getChildContext(){
         return {
             store: this.props.store 
-            , getVisibleTodos: this.props.getVisibleTodos
+            //, getVisibleTodos: this.props.getVisibleTodos
         };
     }
 

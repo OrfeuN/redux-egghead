@@ -33,7 +33,6 @@ class FilterLink extends Component {
 
 FilterLink.contextTypes = {
     store: PropTypes.object
-    , getVisibleTodos: PropTypes.func
 };
 
 export default FilterLink;
