@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 
 import Link from './Link';
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onFilterClick : () => {
+                dispatch({type: 'SET_VISIBILITY_FILTER', filter})
+        }
+    };
+}
+
 class FilterLink extends Component {
     constructor(props) {
         super(props);
