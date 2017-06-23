@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 import Link from './Link';
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (reduxState, ownProps) => {
+    return { 
+        active: reduxState.visibilityFilter === ownProps.filter 
+        , text: ownProps.text
+    };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         onFilterClick : () => {
-                dispatch({type: 'SET_VISIBILITY_FILTER', filter})
+                dispatch({type: 'SET_VISIBILITY_FILTER', filter: ownProps.filter})
         }
     };
 }
 
-class FilterLink extends Component {
+var FooterLink = connect(null, mapDispatchToProps)(Link);
+
+/*class FooterLink extends Component {
     constructor(props) {
         super(props);
     }
@@ -39,8 +49,8 @@ class FilterLink extends Component {
     }
 }
 
-FilterLink.contextTypes = {
+FooterLink.contextTypes = {
     store: PropTypes.object
-};
+};*/
 
-export default FilterLink;
+export default FooterLink;
